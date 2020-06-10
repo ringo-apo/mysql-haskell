@@ -21,4 +21,6 @@ main = do
         defaultConnectInfo {ciUser = "root", ciPassword = "password", ciDatabase = "test"}
      stmt <- prepareStmt conn "INSERT INTO memos (name, comment, time) VALUES (?, ?, ?)"
      transactional conn $ do
-       executeStmt conn stmt [MySQLText "chris", MySQLText "comment", MySQLDateTime '2020/06/05 09:00:00']
+       executeStmt conn stmt [MySQLText "chris", MySQLText "comment", MySQLText "2020/10/01 00:00:00"]
+       (defs, is) <- query_ conn "SELECT * FROM memos"
+       mapM_ print =<< Streams.toList is
